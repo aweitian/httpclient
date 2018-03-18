@@ -17,6 +17,10 @@ class HttpTest extends PHPUnit_Framework_TestCase
         $test = new \Aw\Httpclient\Curl();
         $ret = $test->delete("http://tiananwei.com/tool/method")->send();
         $this->assertEquals("DELETE",trim($ret));
+
+        $test = new \Aw\Httpclient\Curl();
+        $ret = $test->put("http://tiananwei.com/tool/method")->send();
+        $this->assertEquals("PUT",trim($ret));
     }
 
     public function testCookie()

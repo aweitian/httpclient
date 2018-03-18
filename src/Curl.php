@@ -12,9 +12,10 @@ namespace Aw\Httpclient;
 
 class Curl
 {
-    const DEF_UA = 'badtomcat/1.0';
+    const DEF_UA = 'aweitian/1.1';
     const REQUEST_DATA_TYPE_FORMDATA = 0x1;
     const REQUEST_DATA_TYPE_JSON = 0x2;
+    const REQUEST_DATA_TYPE_RAW = 0x3;
     protected $curl;
     public $msg;
     public $errorno;
@@ -190,6 +191,8 @@ class Curl
         $method = strtoupper($method);
         switch ($method) {
             case "PUT":
+                $this->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
+                break;
             case "DELETE":
                 $this->setOption(CURLOPT_CUSTOMREQUEST, 'DELETE');
                 break;
@@ -201,14 +204,16 @@ class Curl
 
     protected function buildData($data)
     {
-        if (is_string($data))
+        if (is_string($data)) {
             return $data;
-        elseif (is_array($data)) {
+        } elseif (is_array($data)) {
             if ($this->requestDataType == self::REQUEST_DATA_TYPE_FORMDATA) {
                 return http_build_query($data);
             } elseif ($this->requestDataType == self::REQUEST_DATA_TYPE_JSON) {
                 return json_encode($data);
             }
+        } else if ($this->requestDataType == self::REQUEST_DATA_TYPE_RAW) {
+            return $data;
         }
         return '';
     }
