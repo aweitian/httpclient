@@ -63,5 +63,31 @@ class HttpTest extends PHPUnit_Framework_TestCase
         var_dump($ret);
         $this->assertTrue(strpos($ret,"bar") !== false);
     }
+
+    public function testPost()
+    {
+        $test = new \Aw\Httpclient\Curl();
+        $test->addHeader("xxx","17739");
+
+        $ret = $test->post("http://tiananwei.com/tool/echoPost",array(
+            "foo" => "bar",
+            'xx' => 'yy'
+        ))->send();
+        var_dump($ret);
+        $this->assertTrue(strpos($ret,"bar") !== false);
+    }
+
+    public function testRaw()
+    {
+        $test = new \Aw\Httpclient\Curl();
+        $test->addHeader("xxx","17739");
+        $test->requestDataType = \Aw\Httpclient\Curl::REQUEST_DATA_TYPE_JSON;
+        $ret = $test->post("http://tiananwei.com/tool/echoRawinput",'xx-yy')->send();
+        echo "should be string:xx-yy\n===============\n",$ret;
+        $test = new \Aw\Httpclient\Curl();
+        $ret = $test->post("http://tiananwei.com/tool/echoRawinput",'{"a":"bbb"}')->send();
+        echo "\n\nshould be string:{\"a\":\"bbb\"}\n===============\n",$ret;
+
+    }
 }
 
