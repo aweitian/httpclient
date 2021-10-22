@@ -92,7 +92,9 @@ class HttpTest extends PHPUnit_Framework_TestCase
 
     public function testHeaderReturn(){
         $test = new \Aw\Httpclient\Curl();
-        $ret = $test->get("https://baidu.com/")->send();
+        $ret = $test->get("https://baidu.com/")
+            ->setOption(CURLOPT_TIMEOUT,30)
+            ->send();
         if ($ret == false) {
             var_dump($test->errorno,$test->msg);
         } else {
